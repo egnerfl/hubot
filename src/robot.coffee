@@ -638,7 +638,10 @@ class Robot
   #
   # Returns a ScopedClient instance.
   http: (url, options) ->
-    HttpClient.create(url, @extend({}, @globalHttpOptions, options))
+    return HttpClient.create(url, options)
+      .header('User-Agent', "Hubot/#{@version}") if url.indexOf(@globalHttpOptions.noProxy) > -1
+
+    return HttpClient.create(url, @extend({}, @globalHttpOptions, options))
       .header('User-Agent', "Hubot/#{@version}")
 
   # Private: Extend obj with objects passed as additional args.
